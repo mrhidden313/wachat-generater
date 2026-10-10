@@ -255,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const batteryVal = Math.min(100, Math.max(1, parseInt(inputBattery.value, 10) || 23));
-    displayBatteryLevel.textContent = batteryVal;
-    batteryFill.style.width = `${batteryVal}%`;
+    if (displayBatteryLevel) displayBatteryLevel.textContent = batteryVal;
+    if (batteryFill) batteryFill.style.width = `${batteryVal}%`;
 
     // 2. Sync Chat Header
     displayContactName.textContent = inputPhone.value.trim() || '+49 1521 2217961';
