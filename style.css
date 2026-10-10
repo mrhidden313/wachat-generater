@@ -506,45 +506,34 @@ body {
 }
 
 .battery-capsule {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 3px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  padding: 1px 5px 1px 6px;
-}
-
-.battery-text {
-  font-size: 11px;
-  font-weight: 600;
-  color: #ffffff;
-  font-family: 'Roboto', sans-serif;
-}
-
-.battery-body {
-  width: 14px;
-  height: 9px;
-  border: 1px solid #ffffff;
-  border-radius: 2px;
-  padding: 1px;
+  justify-content: center;
+  border: 1.2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  height: 13px;
+  padding: 0 4px;
   position: relative;
+  margin-left: 2px;
 }
 
-.battery-body::after {
-  content: '';
+.battery-capsule::after {
+  content: "";
   position: absolute;
-  right: -3px;
-  top: 2px;
+  right: -2.5px;
+  top: 3.5px;
   width: 1.5px;
-  height: 3px;
-  background: #ffffff;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 0 1px 1px 0;
 }
 
-.battery-fill {
-  height: 100%;
-  background: #ffffff;
-  border-radius: 1px;
+.battery-text {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* 2. WhatsApp Dark Header */
@@ -764,18 +753,7 @@ body {
   background-color: var(--wa-bubble-incoming);
   border-radius: 0 8px 8px 8px;
   margin-left: 8px;
-}
-
-/* Curved Tail for Incoming */
-.chat-bubble.incoming::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -8px;
-  width: 8px;
-  height: 13px;
-  background-color: var(--wa-bubble-incoming);
-  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  position: relative;
 }
 
 /* You Bubble (Outgoing / Right) */
@@ -784,18 +762,23 @@ body {
   background-color: var(--wa-bubble-outgoing);
   border-radius: 8px 0 8px 8px;
   margin-right: 8px;
+  position: relative;
 }
 
-/* Curved Tail for Outgoing */
-.chat-bubble.outgoing::before {
-  content: "";
+/* Native Vector SVG Tails (Zero html2canvas clipping bugs) */
+.bubble-tail-svg {
   position: absolute;
   top: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.bubble-tail-svg.incoming-tail {
+  left: -8px;
+}
+
+.bubble-tail-svg.outgoing-tail {
   right: -8px;
-  width: 8px;
-  height: 13px;
-  background-color: var(--wa-bubble-outgoing);
-  clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 
 .bubble-content {
@@ -857,10 +840,6 @@ body {
   align-items: center;
   gap: 12px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.attach-btn svg {
-  transform: rotate(-45deg);
 }
 
 .footer-icon-btn {

@@ -293,12 +293,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const isClient = sender === 'client';
       bubbleDiv.className = `chat-bubble ${isClient ? 'incoming' : 'outgoing'}`;
 
+      const incomingTailSVG = `<svg class="bubble-tail-svg incoming-tail" viewBox="0 0 8 13" width="8" height="13"><path d="M1.533 3.568L8 12.193V0H2.812C1.042 0 .474 2.156 1.533 3.568z" fill="#202C33"/></svg>`;
+      const outgoingTailSVG = `<svg class="bubble-tail-svg outgoing-tail" viewBox="0 0 8 13" width="8" height="13"><path d="M6.467 3.568L0 12.193V0h5.188c1.77 0 2.338 2.156 1.279 3.568z" fill="#005C4B"/></svg>`;
+
       bubbleDiv.innerHTML = `
+        ${isClient ? incomingTailSVG : ''}
         <span class="bubble-content">${escapeHtml(text)}</span>
         <div class="bubble-meta">
           <span class="bubble-time">${escapeHtml(time)}</span>
           ${!isClient ? doubleBlueTicksSVG : ''}
         </div>
+        ${!isClient ? outgoingTailSVG : ''}
       `;
 
       messagesContainer.appendChild(bubbleDiv);
@@ -336,7 +341,9 @@ document.addEventListener('DOMContentLoaded', () => {
         scale: 3, // 3x retina quality
         useCORS: true,
         allowTaint: true,
-        backgroundColor: '#0B141A'
+        backgroundColor: '#0B141A',
+        scrollX: 0,
+        scrollY: 0
       });
 
       const imageURL = canvas.toDataURL('image/png');
