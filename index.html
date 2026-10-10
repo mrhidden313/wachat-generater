@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Review Chat Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- html2canvas for 1-click HD PNG export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="theme-dark">
+
+  <!-- ========================================== -->
+  <!-- PAGE 1: CONFIGURATION & MESSAGE BUILDER    -->
+  <!-- ========================================== -->
+  <div id="page-generator" class="page-container active">
+    <div class="control-card">
+      <header class="app-header">
+        <div class="header-icon">💬</div>
+        <div>
+          <h1 class="header-title">WhatsApp Review Chat Generator</h1>
+          <p class="header-subtitle">Create authentic, pixel-perfect WhatsApp customer review conversations</p>
+        </div>
+      </header>
+
+      <!-- Section: Phone & Chat Header Details -->
+      <section class="form-section">
+        <h2 class="section-heading">1. Header & Phone Settings</h2>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="input-phone">Contact Name / Phone Number</label>
+            <input type="text" id="input-phone" value="+49 1521 2217961" placeholder="+49 1521 2217961">
+          </div>
+          <div class="form-group">
+            <label for="input-subtitle">Account Subtitle</label>
+            <input type="text" id="input-subtitle" value="Business Account" placeholder="Business Account / online">
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label for="input-status-time">Status Bar Clock</label>
+            <input type="text" id="input-status-time" value="8:02" placeholder="8:02">
+          </div>
+          <div class="form-group">
+            <label for="input-network-speed">Network Speed</label>
+            <input type="text" id="input-network-speed" value="0.54 KB/s" placeholder="0.54 KB/s">
+          </div>
+          <div class="form-group">
+            <label for="input-battery">Battery Level (%)</label>
+            <input type="number" id="input-battery" min="1" max="100" value="23" placeholder="23">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="input-avatar-url">Profile Avatar (Image URL or Upload)</label>
+            <div class="avatar-input-row">
+              <input type="text" id="input-avatar-url" placeholder="Paste image URL (optional)">
+              <label class="btn-file-upload">
+                Upload File
+                <input type="file" id="input-avatar-file" accept="image/*" style="display:none;">
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-chat-date">Chat Date Pill</label>
+            <input type="text" id="input-chat-date" value="Today" placeholder="Today / Yesterday / Oct 10">
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Chat Bubble Counts -->
+      <section class="form-section">
+        <h2 class="section-heading">2. Message Bubbles Count</h2>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="count-client">Client Bubbles (Incoming / Left)</label>
+            <input type="number" id="count-client" min="0" max="25" value="2" placeholder="e.g. 2">
+          </div>
+          <div class="form-group">
+            <label for="count-you">Your Bubbles (Outgoing / Right)</label>
+            <input type="number" id="count-you" min="0" max="25" value="2" placeholder="e.g. 2">
+          </div>
+        </div>
+        <div class="btn-group-counts">
+          <button type="button" id="btn-generate-slots" class="btn btn-secondary">
+            ⚡ Generate Bubble Input Slots
+          </button>
+          <button type="button" id="btn-add-single" class="btn btn-tertiary">
+            + Add Single Bubble
+          </button>
+        </div>
+      </section>
+
+      <!-- Section: Bubble Content Placeholders -->
+      <section class="form-section">
+        <div class="slots-header">
+          <h2 class="section-heading">3. Fill Chat Bubble Texts</h2>
+          <span class="badge" id="slots-count-badge">0 Bubbles</span>
+        </div>
+        <p class="section-description">
+          Fill in the messages. You can switch the sender (Client vs You) or change timestamps for each bubble anytime.
+        </p>
+
+        <div id="bubble-slots-container" class="bubble-slots-container">
+          <!-- Dynamic bubble input cards populated here via JS -->
+        </div>
+      </section>
+
+      <!-- Bottom Submit Button -->
+      <div class="action-footer">
+        <button type="button" id="btn-print-result" class="btn btn-primary btn-large">
+          🚀 Print Result (View WhatsApp Screen)
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- PAGE 2: EXACT WHATSAPP SCREEN VIEWPORT     -->
+  <!-- ========================================== -->
+  <div id="page-preview" class="page-container">
+    
+    <!-- Top Floating Toolbar -->
+    <div class="preview-toolbar">
+      <button type="button" id="btn-back-to-edit" class="btn btn-secondary">
+        ← Edit Messages
+      </button>
+      <div class="toolbar-center">
+        <span class="status-indicator">● Exact WhatsApp Replica</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="btn-download-image" class="btn btn-primary">
+          📸 Download HD PNG
+        </button>
+        <button type="button" id="btn-trigger-print" class="btn btn-tertiary">
+          🖨️ Browser Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Phone Wrapper for Screenshot -->
+    <div class="phone-wrapper">
+      <div id="whatsapp-screen" class="whatsapp-screen">
+        
+        <!-- Android Status Bar -->
+        <div class="status-bar">
+          <div class="status-left">
+            <span id="display-status-time" class="status-time">8:02</span>
+          </div>
+          <div class="status-right">
+            <span id="display-status-speed" class="status-speed">0.54<br><small>KB/s</small></span>
+            <span class="status-icon icon-signal">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                <path d="M2 22h20V2L2 22z"/>
+              </svg>
+            </span>
+            <span class="status-icon icon-wifi">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3c3.82 0 7.32 1.48 9.95 3.92L12 18.9 2.05 10.92C4.68 8.48 8.18 7 12 7z"/>
+              </svg>
+            </span>
+            <div class="battery-capsule">
+              <span id="display-battery-level" class="battery-text">23</span>
+              <div class="battery-body">
+                <div id="battery-fill" class="battery-fill" style="width: 23%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp Dark App Header -->
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <button class="icon-btn back-btn" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#E9EDEF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+            <div class="avatar-container">
+              <img id="display-avatar-img" class="avatar-img" src="" alt="Avatar" style="display:none;">
+              <div id="display-avatar-default" class="avatar-default">
+                <svg viewBox="0 0 40 40" width="40" height="40">
+                  <circle cx="20" cy="20" r="20" fill="#FFFFFF"/>
+                  <path d="M12 15.5c-1.2-2.2-2.8-2-3.2-1.8.2 1.3 1.2 2.6 1.8 3.1-.7.7-1 1.7-1 2.9 0 2.4 1.7 3.8 3.8 3.8h.4c.7 0 1.3-.3 1.7-.8.4.5 1 .8 1.7.8h.4c2.1 0 3.8-1.4 3.8-3.8 0-1.2-.3-2.2-1-2.9.6-.5 1.6-1.8 1.8-3.1-.4-.2-2-.4-3.2 1.8-.8-.4-2-.6-3.1-.6s-2.3.2-3.2.6z" fill="#FF5E00"/>
+                  <text x="21" y="24" font-family="'Roboto', sans-serif" font-weight="900" font-size="8.8" fill="#FF5E00" letter-spacing="-0.5">moomoo</text>
+                </svg>
+              </div>
+            </div>
+            <div class="contact-info">
+              <div id="display-contact-name" class="contact-name">+49 1521 2217961</div>
+              <div id="display-contact-subtitle" class="contact-subtitle">Business Account</div>
+            </div>
+          </div>
+
+          <div class="chat-header-right">
+            <div class="call-btn-group">
+              <button class="icon-btn" aria-label="Call">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="#E9EDEF">
+                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+              </button>
+              <svg class="dropdown-arrow" viewBox="0 0 10 6" width="9" height="6" fill="#8696A0">
+                <path d="M0 0l5 6 5-6z"/>
+              </svg>
+            </div>
+            <button class="icon-btn menu-btn" aria-label="Menu">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#E9EDEF">
+                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Continuous Full-Height Wallpaper Area (Top to Bottom Edge) -->
+        <div class="chat-viewport-wrapper">
+          <!-- Chat Scroll Area -->
+          <div class="chat-body" id="chat-body-viewport">
+            
+            <!-- Date Pill -->
+            <div class="date-pill-wrapper">
+              <span id="display-chat-date" class="date-pill">Today</span>
+            </div>
+
+            <!-- Encryption System Box -->
+            <div class="encryption-box">
+              <svg class="lock-svg" viewBox="0 0 12 14" width="10" height="12" fill="#FFD279">
+                <path d="M10 5V3.5C10 1.57 8.43 0 6.5 0S3 1.57 3 3.5V5C1.9 5 1 5.9 1 7v5c0 1.1.9 2 2 2h7c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-5-1.5C5 2.67 5.67 2 6.5 2S8 2.67 8 3.5V5H5V3.5zm5 8.5H2V7h8v5z"/>
+              </svg>
+              <span class="encryption-text">
+                Messages and calls are end-to-end encrypted. Only people in this chat can read, listen to, or share them. <strong class="link-learn">Learn more</strong>
+              </span>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="messages-container" class="messages-container">
+              <!-- Rendered Chat Bubbles will appear here -->
+            </div>
+
+          </div>
+
+          <!-- WhatsApp Bottom Floating Input Bar -->
+          <div class="chat-footer">
+            <div class="message-input-pill">
+              <button class="footer-icon-btn emoji-btn" aria-label="Emoji">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#8696A0" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"/>
+                  <circle cx="9" cy="10" r="1" fill="#8696A0"/>
+                  <circle cx="15" cy="10" r="1" fill="#8696A0"/>
+                  <path d="M8 14.3c1.2 1.6 2.6 2.1 4 2.1s2.8-.5 4-2.1"/>
+                </svg>
+              </button>
+              <span class="message-placeholder">Message</span>
+              <button class="footer-icon-btn attach-btn" aria-label="Attach">
+                <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                </svg>
+              </button>
+              <button class="footer-icon-btn camera-btn" aria-label="Camera">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#8696A0" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="3.6"/>
+                </svg>
+              </button>
+            </div>
+            <button class="mic-circle-btn" aria-label="Voice Message">
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="#111B21">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Android Home Navigation Indicator Pill -->
+          <div class="android-nav-bar">
+            <div class="android-home-pill"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
