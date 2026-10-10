@@ -31,26 +31,26 @@
         <div class="grid-2">
           <div class="form-group">
             <label for="input-phone">Contact Name / Phone Number</label>
-            <input type="text" id="input-phone" value="+49 1521 2217961" placeholder="+49 1521 2217961">
+            <input type="text" id="input-phone" placeholder="+49 1521 2217961">
           </div>
           <div class="form-group">
             <label for="input-subtitle">Account Subtitle</label>
-            <input type="text" id="input-subtitle" value="Business Account" placeholder="Business Account / online">
+            <input type="text" id="input-subtitle" placeholder="Business Account / online">
           </div>
         </div>
 
         <div class="grid-3">
           <div class="form-group">
             <label for="input-status-time">Status Bar Clock</label>
-            <input type="text" id="input-status-time" value="8:02" placeholder="8:02">
+            <input type="text" id="input-status-time" placeholder="8:02">
           </div>
           <div class="form-group">
             <label for="input-network-speed">Network Speed</label>
-            <input type="text" id="input-network-speed" value="0.54 KB/s" placeholder="0.54 KB/s">
+            <input type="text" id="input-network-speed" placeholder="0.54 KB/s">
           </div>
           <div class="form-group">
             <label for="input-battery">Battery Level (%)</label>
-            <input type="number" id="input-battery" min="1" max="100" value="23" placeholder="23">
+            <input type="number" id="input-battery" min="1" max="100" placeholder="23">
           </div>
         </div>
 
@@ -67,7 +67,7 @@
           </div>
           <div class="form-group">
             <label for="input-chat-date">Chat Date Pill</label>
-            <input type="text" id="input-chat-date" value="Today" placeholder="Today / Yesterday / Oct 10">
+            <input type="text" id="input-chat-date" placeholder="Today / Yesterday / Oct 10">
           </div>
         </div>
       </section>
@@ -78,11 +78,11 @@
         <div class="grid-2">
           <div class="form-group">
             <label for="count-client">Client Bubbles (Incoming / Left)</label>
-            <input type="number" id="count-client" min="0" max="25" value="2" placeholder="e.g. 2">
+            <input type="number" id="count-client" min="0" max="25" placeholder="e.g. 2">
           </div>
           <div class="form-group">
             <label for="count-you">Your Bubbles (Outgoing / Right)</label>
-            <input type="number" id="count-you" min="0" max="25" value="2" placeholder="e.g. 2">
+            <input type="number" id="count-you" min="0" max="25" placeholder="e.g. 2">
           </div>
         </div>
         <div class="btn-group-counts">
@@ -124,19 +124,15 @@
     <!-- Top Floating Toolbar -->
     <div class="preview-toolbar">
       <button type="button" id="btn-back-to-edit" class="btn btn-secondary">
-        ← Edit Messages
+        ← Edit
       </button>
-      <div class="toolbar-center">
-        <span class="status-indicator">● Exact WhatsApp Replica</span>
-      </div>
-      <div class="toolbar-actions">
-        <button type="button" id="btn-download-image" class="btn btn-primary">
-          📸 Download HD PNG
-        </button>
-        <button type="button" id="btn-trigger-print" class="btn btn-tertiary">
-          🖨️ Browser Print
-        </button>
-      </div>
+      <button type="button" id="btn-download-image" class="btn btn-primary btn-download" title="Download PNG" aria-label="Download PNG">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+      </button>
     </div>
 
     <!-- Phone Wrapper for Screenshot -->

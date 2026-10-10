@@ -418,24 +418,29 @@ body {
 /* Floating Toolbar */
 .preview-toolbar {
   width: 100%;
-  max-width: 440px;
+  max-width: 412px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
-  gap: 12px;
+  margin-bottom: 14px;
 }
 
-.status-indicator {
-  font-size: 12px;
-  font-weight: 500;
-  color: #3fb950;
-  letter-spacing: 0.2px;
+.btn-download {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
 }
 
-.toolbar-actions {
-  display: flex;
-  gap: 8px;
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spin-icon {
+  animation: spin 0.8s linear infinite;
 }
 
 /* Outer Phone Chassis / Frame */

@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Page 2 Preview Elements
   const btnBackToEdit = document.getElementById('btn-back-to-edit');
   const btnDownloadImage = document.getElementById('btn-download-image');
-  const btnTriggerPrint = document.getElementById('btn-trigger-print');
 
   const displayStatusTime = document.getElementById('display-status-time');
   const displayStatusSpeed = document.getElementById('display-status-speed');
@@ -66,13 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
     </span>
   `;
 
-  // Default sample messages
-  const defaultMessages = [
-    { sender: 'client', text: 'Salam brother, I just received my parcel! The quality is amazing 🔥', time: '8:02' },
-    { sender: 'you', text: 'Walaikum Assalam! Thank you so much for the feedback. Really glad you loved it! 😊', time: '8:03' },
-    { sender: 'client', text: 'Will definitely recommend to all my friends. 10/10 service!', time: '8:03' },
-    { sender: 'you', text: 'Always happy to serve! Let us know whenever you need anything else.', time: '8:04' }
-  ];
+  // Start clean with zero random mock messages
+  const defaultMessages = [];
 
   /**
    * Initialize default slots or restore from memory
@@ -329,11 +323,17 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   async function handleDownloadPNG() {
     if (typeof html2canvas === 'undefined') {
-      alert('html2canvas library is loading or blocked. You can take a direct screenshot using Snipping Tool or Print Dialog.');
+      alert('html2canvas library is loading or blocked. You can take a direct screenshot.');
       return;
     }
 
-    btnDownloadImage.textContent = '⏳ Rendering HD PNG...';
+    const originalHTML = btnDownloadImage.innerHTML;
+    btnDownloadImage.innerHTML = `
+      <svg class="spin-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+      </svg>
+    `;
     btnDownloadImage.disabled = true;
 
     try {
@@ -356,9 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeChild(downloadLink);
     } catch (err) {
       console.error('Error rendering image:', err);
-      alert('Could not auto-download image. You can capture a direct screenshot using Windows Snipping Tool (Win + Shift + S).');
+      alert('Could not auto-download image. You can capture a direct screenshot using Snipping Tool.');
     } finally {
-      btnDownloadImage.textContent = '📸 Download HD PNG';
+      btnDownloadImage.innerHTML = originalHTML;
       btnDownloadImage.disabled = false;
     }
   }
@@ -386,7 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btnPrintResult.addEventListener('click', handlePrintResult);
     btnBackToEdit.addEventListener('click', handleBackToEdit);
     btnDownloadImage.addEventListener('click', handleDownloadPNG);
-    btnTriggerPrint.addEventListener('click', () => window.print());
   }
 
   // Run initialization
